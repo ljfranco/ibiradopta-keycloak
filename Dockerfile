@@ -11,7 +11,7 @@ COPY /providers/. /opt/keycloak/providers
 RUN /opt/keycloak/bin/kc.sh build
 
 # Etapa final (runtime)
-FROM quay.io/keycloak/keycloak:26.0.4
+FROM quay.io/keycloak/keycloak:latest
 
 COPY java.config /etc/crypto-policies/back-ends/java.config
 
@@ -19,8 +19,9 @@ COPY java.config /etc/crypto-policies/back-ends/java.config
 COPY --from=builder /opt/keycloak /opt/keycloak
 
 # Exponer el puerto predeterminado de Keycloak
-EXPOSE 8080
+#EXPOSE 8080
 
 # Comando de inicio de Keycloak
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start-dev"]
+#CMD ["start-dev"]
+CMD ["start", "--optimized", "--import-realm"]
