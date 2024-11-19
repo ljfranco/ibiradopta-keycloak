@@ -1,5 +1,5 @@
 # Etapa de construcción
-FROM quay.io/keycloak/keycloak:25.0.6 AS builder
+FROM quay.io/keycloak/keycloak:26.0.4 AS builder
 
 ARG KC_HEALTH_ENABLED KC_METRICS_ENABLED KC_FEATURES KC_DB KC_HTTP_ENABLED PROXY_ADDRESS_FORWARDING QUARKUS_TRANSACTION_MANAGER_ENABLE_RECOVERY KC_HOSTNAME KC_LOG_LEVEL KC_DB_POOL_MIN_SIZE
 
@@ -11,7 +11,7 @@ COPY /providers/. /opt/keycloak/providers
 RUN /opt/keycloak/bin/kc.sh build
 
 # Etapa final (runtime)
-FROM quay.io/keycloak/keycloak:latest
+FROM quay.io/keycloak/keycloak:26.0.4
 
 COPY java.config /etc/crypto-policies/back-ends/java.config
 
@@ -24,4 +24,4 @@ COPY --from=builder /opt/keycloak /opt/keycloak
 # Comando de inicio de Keycloak
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 #CMD ["start-dev"]
-CMD ["start", "--optimized", "--import-realm"]
+CMD ["start", "--optimized", "--proxy=edge", "--import-realm"]
