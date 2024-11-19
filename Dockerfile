@@ -24,4 +24,4 @@ COPY --from=builder /opt/keycloak /opt/keycloak
 # Comando de inicio de Keycloak
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 #CMD ["start-dev"]
-CMD ["start", "--optimized", "--proxy-headers X-Forwarded-*"]
+CMD ["start", "--optimized"]
